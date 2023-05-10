@@ -41,7 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(canthread,&CANThread::boardInfo,this,&MainWindow::onBoardInfo);
 
     iFlag_zuoyi,iFlag_lihe,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
-    iFlag_tsq_diwei,iFlag_zhuche_zhongxiaotuo,iFlag_qiqu,iFlag_tsq_jiaodu = false;
+    iFlag_tsq_diwei,iFlag_siqu,iFlag_tsq_jiaodu = false;
+    iFlag_zhuche_zhongxiaotuo = true;
 
 
 
@@ -333,56 +334,201 @@ char MainWindow::ConvertHexChar(char ch)
 void MainWindow::DataAnalysis(QStringList messageList)
 {
 
-    //            qDebug() <<"messageList.at(5)"<<messageList.at(5)<<endl;
-                if(messageList.at(5)== "0x18FF2053" /*|| messageList.at(5)==0x18FFB253*/)
-                {
-    //            qDebug()<<"messageList.size()"<<messageList.size()<<endl
-    //                   <<"messageList:"<<messageList<<endl
-    //                  <<"messageList.at(5)"<<messageList.at(5)<<endl
-    //                     <<"messageList.at(9)"<<messageList.at(9)<<endl;
-                QString string_data;
-                string_data = messageList.at(9);
-                string_data.remove("x|").remove(" ").simplified();
-                QString string_data_head = string_data.mid(0,8);
+    if(messageList.at(5)== "0x18FF2053")
+        {
+//                qDebug()<<"messageList.size()"<<messageList.size()<<endl
+//                       <<"messageList:"<<messageList<<endl
+//                      <<"messageList.at(5)"<<messageList.at(5)<<endl
+//                         <<"messageList.at(9)"<<messageList.at(9)<<endl;
+            QString string_data;
+            string_data = messageList.at(9);
+            string_data.remove("x|").remove(" ").simplified();
+            QString string_data_head = string_data.mid(0,8);
+            QString string_data_tail = string_data.mid(8,8);
 
-                bool ok;
-                quint32 hex_data_head = string_data_head.toUInt(&ok,16);
-                quint32 and_result;
-    //            qDebug()<<"接收到的数据："<<string_data_head.toLatin1()
-    //                    <<"前四个字节hex_data_head:"<<QString::number(hex_data_head ,16).toUpper()<<endl;
+            bool ok;
+            quint32 hex_data_head = string_data_head.toUInt(&ok,16);
+            quint32 hex_data_tail = string_data_tail.toUInt(&ok,16);
+            quint32 and_result;
+
+//                qDebug()<<"接收到的数据："<<string_data_head.toLatin1()
+//                        <<"前四个字节hex_data_head:"<<QString::number(hex_data_head ,16).toUpper()<<endl;
+//                qDebug()<<"接收到的数据："<<string_data_tail.toLatin1()
+//                        <<"后四个字节hex_data_head:"<<QString::number(hex_data_tail ,16).toUpper()<<endl;
+
+//                qDebug()<<"and_result"<<QString::number(and_result ,16).toUpper()<<endl;
+
+            //座椅开关检测
+            and_result =  hex_data_head & 0x01000000 ;
+            if (and_result == 0x01000000 && iFlag_zuoyi == false)
+            {
+
+                iFlag_zuoyi = true ;
+                qDebug() <<"座椅开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_zuoyi == true)
+            {
+                iFlag_zuoyi = false ;
+                qDebug() <<"座椅关"<<endl;
+            }
+             //离合器开关检测
+            and_result =  hex_data_head & 0x04000000 ;
+            if (and_result == 0x04000000 && iFlag_lihe == false)
+            {
+
+                iFlag_lihe = true ;
+                qDebug() <<"离合开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_lihe == true)
+            {
+                iFlag_lihe = false ;
+                qDebug() <<"离合关"<<endl;
+            }
+            //空挡开关检测
+            and_result =  hex_data_head & 0x50000000 ;
+            if (and_result == 0x50000000 && iFlag_kongdang == false)
+            {
+
+               iFlag_kongdang = true ;
+               qDebug() <<"空挡开"<<endl;
+            }
+            else if (and_result == 0x10000000 && iFlag_kongdang == true)
+            {
+               iFlag_kongdang = false ;
+               qDebug() <<"空挡关"<<endl;
+            }
+            //双边制动开关检测
+            and_result =  hex_data_head & 0x00010000 ;
+            if (and_result == 0x00010000 && iFlag_shuangbian == false)
+            {
+
+              iFlag_shuangbian = true ;
+              qDebug() <<"双边制动开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_shuangbian == true)
+            {
+              iFlag_shuangbian = false ;
+              qDebug() <<"双边制动关"<<endl;
+            }
+            //pto使能开关检测
+            and_result =  hex_data_head & 0x00040000 ;
+            if (and_result == 0x00040000 && iFlag_pto_shineng == false)
+            {
+
+             iFlag_pto_shineng = true ;
+             qDebug() <<"pto使能开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_pto_shineng == true)
+            {
+             iFlag_pto_shineng = false ;
+             qDebug() <<"pto使能关"<<endl;
+            }
+            //pto外部开关检测
+            and_result =  hex_data_head & 0x00100000 ;
+            if (and_result == 0x00100000 && iFlag_pto_waibu == false)
+            {
+
+            iFlag_pto_waibu = true ;
+            qDebug() <<"pto外部开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_pto_waibu == true)
+            {
+            iFlag_pto_waibu = false ;
+            qDebug() <<"pto外部关"<<endl;
+            }
+            //提升器位置功能检测
+            and_result =  hex_data_head & 0x00400000 ;
+            if (and_result == 0x00400000 && iFlag_tsq_weizhi == false)
+            {
+
+            iFlag_tsq_weizhi = true ;
+            qDebug() <<"提升器位置变化"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_tsq_weizhi == true)
+            {
+            iFlag_tsq_weizhi = false ;
+            qDebug() <<"提升器位置恢复"<<endl;
+            }
+
+            //提升器低位功能检测
+            and_result =  hex_data_head & 0x00000100 ;
+            if (and_result == 0x00000100 && iFlag_tsq_diwei == false)
+            {
+
+            iFlag_tsq_diwei = true ;
+            qDebug() <<"提升器低位开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_tsq_diwei == true)
+            {
+            iFlag_tsq_diwei = false ;
+            qDebug() <<"提升器低位关"<<endl;
+            }
+            //中拖制动开关检测
+            and_result =  hex_data_head & 0x00000400 ;
+            if (and_result == 0x00000400 && iFlag_zhuche_zhongxiaotuo == true)
+            {
+
+            iFlag_zhuche_zhongxiaotuo = false ;
+            qDebug() <<"中拖制动关"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_zhuche_zhongxiaotuo == false)
+            {
+            iFlag_zhuche_zhongxiaotuo = true ;
+            qDebug() <<"中拖制动开"<<endl;
+            }
+            //四驱使能开关检测
+            and_result =  hex_data_head & 0x00001000 ;
+            if (and_result == 0x00001000 && iFlag_siqu == false)
+            {
+
+            iFlag_siqu = true ;
+            qDebug() <<"四驱使能开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_siqu == true)
+            {
+            iFlag_siqu = false ;
+            qDebug() <<"四驱使能关"<<endl;
+            }
+            //提升器位置角度功能检测
+            and_result =  hex_data_tail & 0xfa000000 ;
+            if (and_result == 0x00000000 && iFlag_tsq_jiaodu == false)
+            {
+
+            iFlag_tsq_jiaodu = true ;
+            qDebug() <<"提升器位置角度变化"<<endl;
+            }
+            else if (and_result == 0xfa000000 && iFlag_tsq_jiaodu == true)
+            {
+            iFlag_tsq_jiaodu = false ;
+            qDebug() <<"提升器位置角度恢复默认"<<endl;
+            }
 
 
-    //            qDebug()<<"and_result"<<QString::number(and_result ,16).toUpper()<<endl;
+        emit signal_send(1);
+        }
 
-                //座椅开关检测
-                and_result =  hex_data_head & 0x01000000 ;
-                if (and_result == 0x01000000 && iFlag_zuoyi == false)
-                {
+    if(messageList.at(5)=="0x18FFB253")
+       {
+        QString string_data;
+        string_data = messageList.at(9);
+        string_data.remove("x|").remove(" ").simplified();
+        QString string_data_1 = string_data.mid(0,2);
+        QString string_data_2 = string_data.mid(2,2);
+        QString string_data_3 = string_data.mid(4,2);
+        QString string_data_4 = string_data.mid(6,2);
 
-                    iFlag_zuoyi = true ;
-                    qDebug() <<"座椅开"<<endl;
-                }
-                else if (and_result == 0x00000000 && iFlag_zuoyi == true)
-                {
-                    iFlag_zuoyi = false ;
-                    qDebug() <<"座椅关"<<endl;
-                }
+        bool ok;
+        int hex_data_1 = string_data_1.toInt(&ok,16) * 10;
+        int hex_data_2 = string_data_2.toInt(&ok,16) * 10;
+        int hex_data_3 = string_data_3.toInt(&ok,16) * 10;
+        int hex_data_4 = string_data_4.toInt(&ok,16) * 10;
 
-    //            if(and_result == 0x01000000)
-    //                {iFlag_zuoyi = true , qDebug() <<"座椅开"<<endl;}
-    //            else qDebug() <<"座椅关"<<endl;
-
-    //            if(and_result == 0x01000000)
-    //                     {qDebug() <<"离合开"<<endl};
-    //            else if(hex_data.at(1) == "50")  qDebug() <<"空挡开"<<endl;
-    //            else if(hex_data.at(2) == "01")  qDebug() <<"双边开"<<endl;
-    //            else if(hex_data.at(2) == "04")  qDebug() <<"pto使能开"<<endl;
-    //            else if(hex_data.at(2) == "10")  qDebug() <<"pto外部开"<<endl;
-    //            else if(hex_data.at(2) == "40")  qDebug() <<"提升器位置开"<<endl;
-
-
-                emit signal_send(1);
-                 }
+//        qDebug()<<"接收到的数据："<<string_data_1.toLatin1()<<endl
+//                <<"四驱电磁阀电流: "<<hex_data_1<<"mA"<<endl
+//                <<"启动电磁阀电流: "<<hex_data_2<<"mA"<<endl
+//                <<"蜂鸣器电磁阀电流: "<<hex_data_3<<"mA"<<endl
+//                <<"pto电磁阀电流: "<<hex_data_4<<"mA"<<endl;
+       }
 }
 
 

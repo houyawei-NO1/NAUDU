@@ -43,7 +43,7 @@ private:
     Ui::MainWindow *ui;
     CANThread *canthread;
     bool iFlag_zuoyi,iFlag_lihe,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
-         iFlag_tsq_diwei,iFlag_zhuche_zhongxiaotuo,iFlag_qiqu,iFlag_tsq_jiaodu;
+         iFlag_tsq_diwei,iFlag_zhuche_zhongxiaotuo,iFlag_siqu,iFlag_tsq_jiaodu;
 //    NanDuWidget Widget;
 };
 

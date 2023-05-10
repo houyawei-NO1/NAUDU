@@ -28,12 +28,32 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     canthread.cpp \
-    nanduwidget.cpp
+    nanduwidget.cpp \
+    menubarwid.cpp \
+    pushbutton.cpp \
+    toolbutton.cpp \
+    ndmassegebox.cpp \
+    ctipareawid.cpp \
+    cstatewid.cpp \
+    cdoublebutton.cpp \
+    clickedlabel.cpp \
+    mainwidget.cpp \
+    ledwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     canthread.h \
-    nanduwidget.h
+    nanduwidget.h \
+    menubarwid.h \
+    pushbutton.h \
+    toolbutton.h \
+    ndmassegebox.h \
+    ctipareawid.h \
+    cstatewid.h \
+    cdoublebutton.h \
+    clickedlabel.h \
+    mainwidget.h \
+    ledwidget.h
 
 FORMS += \
         mainwindow.ui
@@ -48,3 +68,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./ -lControlCAN
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
+
+RESOURCES += \
+    res.qrc

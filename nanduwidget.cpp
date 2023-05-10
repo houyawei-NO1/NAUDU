@@ -4,6 +4,16 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
 {
 
     setupUi();
+
+    connect(m_pMenuBar, SIGNAL(CurSelectPage(int)), this, SLOT(SelectButton(int)),Qt::QueuedConnection);
+    connect(m_pMenuBar, SIGNAL(showMax()), this, SLOT(click_on_Max()),Qt::QueuedConnection);
+    connect(m_pMenuBar, SIGNAL(showMin()), this, SLOT(click_on_Min()),Qt::QueuedConnection);
+    connect(m_pMenuBar, SIGNAL(closeWidget()), this, SLOT(click_on_closeall()),Qt::QueuedConnection);
+
+    connect(m_ndMsgBox,SIGNAL(Clicked_btn_OK(int)),this,SLOT(click_on_msgok(int)),Qt::QueuedConnection);
+    connect(m_ndMsgBox,SIGNAL(Clicked_btn_Cancel()),this,SLOT(click_on_msgcancel()),Qt::QueuedConnection);
+
+
 }
 void NanDuWidget::setupUi()
 {
@@ -12,8 +22,64 @@ void NanDuWidget::setupUi()
     connect(w, SIGNAL(signal_send(int)), this, SLOT(led_change(int)),Qt::QueuedConnection);
 //    setCentralWidget(widget);
     setAttribute(Qt::WA_StaticContents);
-    setFixedSize(400,500);
+//    setFixedSize(1920,1080);
     setWindowTitle("子窗口");
+    setWindowFlags(Qt::FramelessWindowHint);
+    setWindowIcon(QIcon(":/Config/Res/logo1"));
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();
+    int currentScreenWid = screenRect.width();
+    int currentScreenHei = screenRect.height();
+    this->resize(currentScreenWid*3/4,currentScreenHei*4/5);
+
+    m_ndMsgBox = new ndmassegebox(this);
+    m_ndMsgBox->setGeometry((currentScreenWid-460)/2,(currentScreenHei-260)/2,460,260);
+    m_ndMsgBox->setVisible(false);
+    m_Darkwidge = new QWidget(this);
+    m_Darkwidge->resize (currentScreenWid, currentScreenHei);
+    m_Darkwidge->move (0,0);
+    QPalette pal(m_Darkwidge->palette());
+    m_Darkwidge->setStyleSheet("background-color:rgba(0, 0, 0, 60%);border-radius: 20px;");//透明如果主界面是圆角就要圆角
+    m_Darkwidge->setAutoFillBackground(true);
+    m_Darkwidge->setPalette(pal);
+    m_Darkwidge->hide();
+
+    QVBoxLayout *pMainLayOut = new QVBoxLayout(this);
+
+    QVBoxLayout *pVSubLayOut = new QVBoxLayout(this);
+    pVSubLayOut->setSpacing(0); //控件之间的边距
+    m_pMenuBar = new MenuBarWid(this);
+
+    m_StackedWidget = new QStackedWidget(this);
+    mainwidget = new MainWidget(this);
+
+    m_StackedWidget->addWidget(mainwidget);
+
+
+   pVSubLayOut->addWidget(m_pMenuBar);
+   pVSubLayOut->addWidget(m_StackedWidget);
+   pVSubLayOut->setSpacing(0);
+
+    QWidget* widbottom = new QWidget(this);
+    widbottom->setStyleSheet("background-color:rgb(28,32,48)");
+
+    QHBoxLayout *pLayOut_Bottom = new QHBoxLayout(widbottom);
+    m_pTipAreaWid = new CTipAreaWid(this);
+    m_pStateAreawid = new CStateWid(this);
+    pLayOut_Bottom->addWidget(m_pTipAreaWid,5);
+    pLayOut_Bottom->addWidget(m_pStateAreawid,5);
+    pLayOut_Bottom->setSpacing(0);
+    pLayOut_Bottom->setContentsMargins(0,0,0,0);
+
+    pMainLayOut->addLayout(pVSubLayOut);
+    pMainLayOut->addWidget(widbottom,0,Qt::AlignBottom);
+    pMainLayOut->setContentsMargins(0,0,0,0);
+    pMainLayOut->setSpacing(0); //控件之间的边距
+    pMainLayOut->setMargin(0);
+    widget->setLayout(pMainLayOut);
+
+    /*
     gLayout = new QGridLayout(widget);
 //第一行
     vLayout[0] = new QVBoxLayout();
@@ -24,6 +90,8 @@ void NanDuWidget::setupUi()
     tName[0]->setText("座椅开关");
     vLayout[0]->addWidget(pStatus[0]);
     vLayout[0]->addWidget(tName[0]);
+    m_pMenuBar = new MenuBarWid(this);
+    vLayout[0]->addWidget(m_pMenuBar);
     gLayout->addLayout(vLayout[0],0,0);
 
     vLayout[1] = new QVBoxLayout();
@@ -74,14 +142,94 @@ void NanDuWidget::setupUi()
 
 
     widget->setLayout(gLayout);
-
+*/
 
 }
 NanDuWidget::~NanDuWidget()
 {
-
+    delete w;
 }
 void NanDuWidget::led_change(int led_num)
 {
 //qDebug()<<"nanduwidget:"<<led_num<<endl;
+}
+
+void NanDuWidget::SelectButton(int iCurSelectNum)
+{
+
+    int iturnNum = 0;
+    if(iCurSelectNum < 4)
+        iturnNum = iCurSelectNum;
+    else
+        iturnNum = 0;
+
+//    m_StackedWidget->setCurrentIndex(iturnNum);
+
+
+    if(iCurSelectNum == 4)
+    {
+        qDebug()<<"wd"<<endl;
+        //弹框提示重启
+        m_Darkwidge->show();
+        qDebug()<<"wd"<<endl;
+        m_ndMsgBox->setVisible(true);
+        m_ndMsgBox->setType(0);
+        m_ndMsgBox->setLabelText(tr("重启提醒"),tr("是否确认重启设备？"));
+        qDebug()<<"wd"<<endl;
+    }
+
+    if(iCurSelectNum == 5)
+    {
+        //弹框提示关机
+        m_Darkwidge->show();
+
+        m_ndMsgBox->setVisible(true);
+        m_ndMsgBox->setType(1);
+        m_ndMsgBox->setLabelText(tr("关机提醒"),tr("是否确认关机？"));
+    }
+}
+void NanDuWidget::click_on_closeall()
+{
+    delete w;
+    close();
+}
+void NanDuWidget::click_on_Max()
+{
+    this->showFullScreen();
+}
+void NanDuWidget::click_on_Min()
+{
+    this->showMinimized();
+}
+void NanDuWidget::CloseSoft()
+{
+    delete w;
+    close();
+}
+void NanDuWidget::click_on_msgok(int msgtype)
+{
+    m_Darkwidge->hide();
+
+    if(msgtype == 0)
+    {
+
+        m_pMenuBar->setFirBtnChecked();
+    }
+    else if(msgtype == 1)
+    {
+
+        m_pMenuBar->setFirBtnChecked();
+    }
+
+    else
+        ;
+
+    //this->showFullScreen();
+}
+void NanDuWidget::click_on_msgcancel()
+{
+    m_Darkwidge->hide();
+    m_pMenuBar->setFirBtnChecked();
+
+    //this->showFullScreen();
 }
