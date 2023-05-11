@@ -29,7 +29,7 @@ void MenuBarWid::Init()
 {
     QHBoxLayout *main_layout = new QHBoxLayout(this);
 
-    QHBoxLayout *title_layout = new QHBoxLayout(this);
+    QHBoxLayout *title_layout = new QHBoxLayout();
     m_pVersion_title = new QLabel(this);
     QLabel *logo_label = new QLabel(this);
     QPixmap pixmap(":/Config/Res/logo.png");
@@ -46,7 +46,7 @@ void MenuBarWid::Init()
     title_layout->setSpacing(15);
 
 
-    QHBoxLayout *button_layout = new QHBoxLayout(this);
+    QHBoxLayout *button_layout = new QHBoxLayout();
     pushButtonGroup = new QButtonGroup(this);
     pushButtonGroup->setExclusive(true);
     connect(pushButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(slot_btnGroupClicked(int)));
@@ -70,7 +70,7 @@ void MenuBarWid::Init()
     button_layout->setContentsMargins(50, 0, 0, 0);
 
 
-    QHBoxLayout *count_layout = new QHBoxLayout(this);
+    QHBoxLayout *count_layout = new QHBoxLayout();
     QLabel* lb_TotleNum = new QLabel(this);
     lb_TotleNum->setStyleSheet("color:#66ff00;font:20px");
     lb_TotleNum->setText("总数:");

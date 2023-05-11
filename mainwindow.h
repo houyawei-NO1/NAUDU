@@ -22,21 +22,19 @@ public:
     QByteArray GetHexValue(QString str);
     char ConvertHexChar(char ch);
     void DataAnalysis(QStringList messageList);
+    void ConnectDev();
+    void ResetDev();
 signals:
-    void signal_send(int);
+    void signal_send(int,bool);
+    void electric_send(int,int,int,int);
 private slots:
     void onGetProtocolData(VCI_CAN_OBJ *vci,unsigned int dwRel,unsigned int channel);
     void onBoardInfo(VCI_BOARD_INFO vbi);
     void on_pushButton_clicked();
-
     void on_sendBtn_clicked();
-
     void on_cleanListBtn_clicked();
-
     void on_pushButton_4_clicked();
-
     void on_pushButton_2_clicked();
-
     void on_pushButton_3_clicked();
 
 private:

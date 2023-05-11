@@ -3,5 +3,10 @@
         <file>close_button.png</file>
         <file>max_button.png</file>
         <file>min_button.png</file>
+        <file>led_gray.png</file>
+        <file>led_green.png</file>
+        <file>led_red.png</file>
+        <file>led_yellow.png</file>
+        <file>led_blue.png</file>
     </qresource>
 </RCC>

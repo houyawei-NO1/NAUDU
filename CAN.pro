@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -38,7 +38,8 @@ SOURCES += \
     cdoublebutton.cpp \
     clickedlabel.cpp \
     mainwidget.cpp \
-    ledwidget.cpp
+    ledwidget.cpp \
+    chartviewwid.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     cdoublebutton.h \
     clickedlabel.h \
     mainwidget.h \
-    ledwidget.h
+    ledwidget.h \
+    chartviewwid.h
 
 FORMS += \
         mainwindow.ui

@@ -24,6 +24,7 @@ public:
     explicit NanDuWidget(QWidget *parent = nullptr);
     ~NanDuWidget();
     void setupUi();
+    void Reset();
 
 private:
     QWidget *widget=new QWidget(this);
@@ -44,7 +45,6 @@ private:
 signals:
 
 public slots:
-    void led_change(int);
     void SelectButton(int);
     void click_on_Max();
     void click_on_Min();
@@ -52,6 +52,7 @@ public slots:
     void CloseSoft();
     void click_on_msgok(int);
     void click_on_msgcancel();
+
 };
 
 #endif // NANDUWIDGET_H
