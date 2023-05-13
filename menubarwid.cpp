@@ -36,7 +36,7 @@ void MenuBarWid::Init()
     logo_label->setPixmap(pixmap);
     logo_label->setCursor(Qt::PointingHandCursor);
 
-    m_pVersion_title->setMaximumHeight(20);
+    m_pVersion_title->setMaximumHeight(40);
     logo_label->setMaximumWidth(120);
     logo_label->setAlignment(Qt::AlignCenter);
     m_pVersion_title->setAlignment(Qt::AlignCenter);
@@ -73,10 +73,10 @@ void MenuBarWid::Init()
     QHBoxLayout *count_layout = new QHBoxLayout();
     QLabel* lb_TotleNum = new QLabel(this);
     lb_TotleNum->setStyleSheet("color:#66ff00;font:20px");
-    lb_TotleNum->setText("总数:");
+//    lb_TotleNum->setText("总数:");
     m_lbTotleNum = new QLabel(this);
     m_lbTotleNum->setStyleSheet("color:#66ff00;font:20px");
-    m_lbTotleNum->setText("0 ");
+//    m_lbTotleNum->setText("0 ");
     count_layout->addWidget(lb_TotleNum);
     count_layout->addWidget(m_lbTotleNum);
     count_layout->setSpacing(5);
@@ -111,7 +111,7 @@ void MenuBarWid::Init()
 void MenuBarWid::translateLanguage()
 {
     m_pVersion_title->setText("南都汽车安全控制器检测");
-    m_pVersion_title->setStyleSheet("color:white");
+    m_pVersion_title->setStyleSheet("color:white;font:25px");
 
     pushButtonGroup->button(0)->setText("主界面");
     pushButtonGroup->button(1)->setText("复位");

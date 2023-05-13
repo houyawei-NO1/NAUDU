@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     iFlag_zuoyi,iFlag_lihe,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
     iFlag_tsq_diwei,iFlag_siqu,iFlag_tsq_jiaodu = false;
     iFlag_zhuche_zhongxiaotuo = true;
+    iSta_Dev,iSta_CanInit,iSta_CanStart = false;
 
 
 
@@ -127,10 +128,12 @@ void MainWindow::onGetProtocolData(VCI_CAN_OBJ *vci,unsigned int dwRel,unsigned 
         messageList << str;//数据
         */
 
-        AddDataToList(messageList);
+//        AddDataToList(messageList);
         DataAnalysis(messageList);
 
+
     }
+    emit DataRec_sta();
 }
 
 QString versionStr(USHORT ver)
@@ -166,9 +169,15 @@ void MainWindow::on_pushButton_clicked()//打开
             ui->comboBox_3->setEnabled(false);
             ui->pushButton_2->setEnabled(true);
             ui->pushButton->setText(tr("关闭设备"));
+            iSta_Dev = true ;
         }
         else
+            {
             QMessageBox::warning(this,"警告","打开设备失败！");
+            iSta_Dev = false;
+            iSta_CanInit = false;
+            iSta_CanStart = false;
+            }
     }
     else if(ui->pushButton->text() == tr("关闭设备"))
     {
@@ -183,7 +192,12 @@ void MainWindow::on_pushButton_clicked()//打开
         ui->pushButton->setText(tr("打开设备"));
         canthread->stop();
         canthread->closeDevice();
+        iSta_Dev = false;
+        iSta_CanInit = false;
+        iSta_CanStart = false;
     }
+
+    emit status_send(iSta_Dev,iSta_CanInit,iSta_CanStart);
 }
 
 void MainWindow::on_sendBtn_clicked()
@@ -268,9 +282,14 @@ void MainWindow::on_pushButton_2_clicked()//初始化
     {
         ui->pushButton_3->setEnabled(true);
         ui->pushButton_2->setEnabled(false);
+        iSta_CanInit = true;
     }
     else
+    {
         QMessageBox::warning(this,"警告","CAN初始化失败！");
+        iSta_CanInit = false;
+    }
+    emit status_send(iSta_Dev,iSta_CanInit,iSta_CanStart);
 }
 
 void MainWindow::on_pushButton_3_clicked()//启动
@@ -281,9 +300,14 @@ void MainWindow::on_pushButton_3_clicked()//启动
         ui->pushButton_4->setEnabled(true);
         ui->sendBtn->setEnabled(true);
         canthread->start();
+        iSta_CanStart = true;
     }
     else
+    {
         QMessageBox::warning(this,"警告","CAN启动失败！");
+        iSta_CanStart = false;
+    }
+    emit status_send(iSta_Dev,iSta_CanInit,iSta_CanStart);
 }
 
 QByteArray MainWindow::GetHexValue(QString str)
@@ -365,13 +389,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
                 iFlag_zuoyi = true ;
                 emit signal_send(0,iFlag_zuoyi);
-                qDebug() <<"座椅开"<<endl;
+//                qDebug() <<"座椅开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_zuoyi == true)
             {
                 iFlag_zuoyi = false ;
                 emit signal_send(0,iFlag_zuoyi);
-                qDebug() <<"座椅关"<<endl;
+//                qDebug() <<"座椅关"<<endl;
             }
              //离合器开关检测
             and_result =  hex_data_head & 0x04000000 ;
@@ -380,13 +404,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
                 iFlag_lihe = true ;
                 emit signal_send(1,iFlag_lihe);
-                qDebug() <<"离合开"<<endl;
+//                qDebug() <<"离合开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_lihe == true)
             {
                 iFlag_lihe = false ;
                 emit signal_send(1,iFlag_lihe);
-                qDebug() <<"离合关"<<endl;
+//                qDebug() <<"离合关"<<endl;
             }
             //空挡开关检测
             and_result =  hex_data_head & 0x50000000 ;
@@ -395,13 +419,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
                iFlag_kongdang = true ;
                emit signal_send(3,iFlag_kongdang);
-               qDebug() <<"空挡开"<<endl;
+//               qDebug() <<"空挡开"<<endl;
             }
             else if (and_result == 0x10000000 && iFlag_kongdang == true)
             {
                iFlag_kongdang = false ;
                emit signal_send(3,iFlag_kongdang);
-               qDebug() <<"空挡关"<<endl;
+//               qDebug() <<"空挡关"<<endl;
             }
             //双边制动开关检测
             and_result =  hex_data_head & 0x00010000 ;
@@ -410,13 +434,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
               iFlag_shuangbian = true ;
               emit signal_send(4,iFlag_shuangbian);
-              qDebug() <<"双边制动开"<<endl;
+//              qDebug() <<"双边制动开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_shuangbian == true)
             {
               iFlag_shuangbian = false ;
                emit signal_send(4,iFlag_shuangbian);
-              qDebug() <<"双边制动关"<<endl;
+//              qDebug() <<"双边制动关"<<endl;
             }
             //pto使能开关检测
             and_result =  hex_data_head & 0x00040000 ;
@@ -425,13 +449,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
              iFlag_pto_shineng = true ;
              emit signal_send(5,iFlag_pto_shineng);
-             qDebug() <<"pto使能开"<<endl;
+//             qDebug() <<"pto使能开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_pto_shineng == true)
             {
              iFlag_pto_shineng = false ;
               emit signal_send(5,iFlag_pto_shineng);
-             qDebug() <<"pto使能关"<<endl;
+//             qDebug() <<"pto使能关"<<endl;
             }
             //pto外部开关检测
             and_result =  hex_data_head & 0x00100000 ;
@@ -440,13 +464,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_pto_waibu = true ;
              emit signal_send(6,iFlag_pto_waibu);
-            qDebug() <<"pto外部开"<<endl;
+//            qDebug() <<"pto外部开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_pto_waibu == true)
             {
             iFlag_pto_waibu = false ;
             emit signal_send(6,iFlag_pto_waibu);
-            qDebug() <<"pto外部关"<<endl;
+//            qDebug() <<"pto外部关"<<endl;
             }
             //提升器位置功能检测
             and_result =  hex_data_head & 0x00400000 ;
@@ -455,13 +479,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_tsq_weizhi = true ;
             emit signal_send(7,iFlag_tsq_weizhi);
-            qDebug() <<"提升器位置变化"<<endl;
+//            qDebug() <<"提升器位置变化"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_tsq_weizhi == true)
             {
             iFlag_tsq_weizhi = false ;
             emit signal_send(7,iFlag_tsq_weizhi);
-            qDebug() <<"提升器位置恢复"<<endl;
+//            qDebug() <<"提升器位置恢复"<<endl;
             }
 
             //提升器低位功能检测
@@ -471,13 +495,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_tsq_diwei = true ;
             emit signal_send(8,iFlag_tsq_diwei);
-            qDebug() <<"提升器低位开"<<endl;
+//            qDebug() <<"提升器低位开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_tsq_diwei == true)
             {
             iFlag_tsq_diwei = false ;
              emit signal_send(8,iFlag_tsq_diwei);
-            qDebug() <<"提升器低位关"<<endl;
+//            qDebug() <<"提升器低位关"<<endl;
             }
             //中拖制动开关检测
             and_result =  hex_data_head & 0x00000400 ;
@@ -486,13 +510,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_zhuche_zhongxiaotuo = false ;
             emit signal_send(9,iFlag_zhuche_zhongxiaotuo);
-            qDebug() <<"中拖制动关"<<endl;
+//            qDebug() <<"中拖制动关"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_zhuche_zhongxiaotuo == false)
             {
             iFlag_zhuche_zhongxiaotuo = true ;
             emit signal_send(9,iFlag_zhuche_zhongxiaotuo);
-            qDebug() <<"中拖制动开"<<endl;
+//            qDebug() <<"中拖制动开"<<endl;
             }
             //四驱使能开关检测
             and_result =  hex_data_head & 0x00001000 ;
@@ -501,7 +525,7 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_siqu = true ;
             emit signal_send(10,iFlag_siqu);
-            qDebug() <<"四驱使能开"<<endl;
+//            qDebug() <<"四驱使能开"<<endl;
             }
             else if (and_result == 0x00000000 && iFlag_siqu == true)
             {
@@ -516,13 +540,13 @@ void MainWindow::DataAnalysis(QStringList messageList)
 
             iFlag_tsq_jiaodu = true ;
              emit signal_send(11,iFlag_tsq_jiaodu);
-            qDebug() <<"提升器位置角度变化"<<endl;
+//            qDebug() <<"提升器位置角度变化"<<endl;
             }
             else if (and_result == 0xfa000000 && iFlag_tsq_jiaodu == true)
             {
             iFlag_tsq_jiaodu = false ;
             emit signal_send(11,iFlag_tsq_jiaodu);
-            qDebug() <<"提升器位置角度恢复默认"<<endl;
+//            qDebug() <<"提升器位置角度恢复默认"<<endl;
             }
 
 

@@ -28,8 +28,6 @@ bool CANThread::openDevice(UINT deviceType,UINT debicIndex,UINT baundRate)
     dwRel = VCI_OpenDevice(m_deviceType, m_debicIndex, 0);
     if(dwRel != 1)
         return false;
-    else
-        qDebug()<<"open success";
     return true;
 }
 
@@ -119,8 +117,6 @@ bool CANThread::initCAN()
     dwRel = VCI_InitCAN(m_deviceType, m_debicIndex, 1, &vic);
     if(dwRel !=1)
         return false;
-    else
-        qDebug()<<"init success";
 
     VCI_BOARD_INFO vbi;
     dwRel = VCI_ReadBoardInfo(m_deviceType, m_debicIndex, &vbi);
@@ -136,18 +132,12 @@ bool CANThread::startCAN()
 {
     if(VCI_StartCAN(m_deviceType, m_debicIndex, 0) !=1)
     {
-        qDebug()<<"start 0 fail.";
         return false;
     }
-    else
-        qDebug()<<"start 0 success.";
     if(VCI_StartCAN(m_deviceType, m_debicIndex, 1) !=1)
     {
-        qDebug()<<"start 1 fail.";
         return false;
     }
-    else
-        qDebug()<<"start 1 success.";
     return true;
 }
 
@@ -181,18 +171,12 @@ bool CANThread::reSetCAN()
 {
     if(VCI_ResetCAN(m_deviceType, m_debicIndex, 0) !=1)
     {
-        qDebug()<<"reset 0 fail.";
         return false;
     }
-    else
-        qDebug()<<"reset 0 success.";
     if(VCI_ResetCAN(m_deviceType, m_debicIndex, 1) !=1)
     {
-        qDebug()<<"reset 1 fail.";
         return false;
     }
-    else
-        qDebug()<<"reset 1 success.";
     return true;
 }
 

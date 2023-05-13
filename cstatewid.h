@@ -5,27 +5,9 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QTimer>
 #include "cdoublebutton.h"
 
-typedef struct __ST_RUN_MONITOR_STATUS_INFO__
-{
-public:
-    unsigned short codeId;//子错误码
-    unsigned short errorLever;
-    unsigned short id;
-    bool isRecover; // 0x00  异常触发  0x01异常恢复
-    char errorInfo[128];
-    char name[64];   //模块名称
-    bool operator< (const __ST_RUN_MONITOR_STATUS_INFO__& A)const{
-        if(this->id < A.id)
-            return true;
-        else if(this->codeId < A.codeId)
-            return true;
-        else
-            return false;
-    }
-
-}ST_RUN_MONITOR_STATUS_INFO;
 
 class CStateWid : public QWidget
 {
@@ -39,11 +21,13 @@ signals:
     void sigBtnClick(int,QString);
     void sigShowErrorMsg(int,QString,QString);
 public slots:
-    void setparamstate(ST_RUN_MONITOR_STATUS_INFO strstate);
+//    void setparamstate(ST_RUN_MONITOR_STATUS_INFO strstate);
    void click_on_BtnRfid();
    void click_on_BtnThick();
    void click_on_BtnWaste();
    void click_on_BtnStamp();
+   void status_slot(bool,bool,bool);
+   void DataRec_slot();
 
 private:
        QLabel* m_text_sortOne;

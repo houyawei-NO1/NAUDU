@@ -25,10 +25,10 @@ void CStateWid::Init()
     pe.setColor(QPalette::WindowText, Qt::white);
 
     QString strColor="border-radius:8px;background-color:rgb(67,207,124)";
-    m_vectext.append("服务器");
-    m_vectext.append("相机");
-    m_vectext.append("控制板");
-    m_vectext.append("算法");
+    m_vectext.append("开启设备");
+    m_vectext.append("CAN初始化");
+    m_vectext.append("CAN启动");
+    m_vectext.append("数据接收");
 
     m_text_sortOne = new  QLabel(this);
     m_text_sortOne->setText(m_vectext.at(0));
@@ -62,12 +62,6 @@ void CStateWid::Init()
     m_color_sortFour->setStyleSheet(strColor);
     m_color_sortFour->setFocusPolicy(Qt::NoFocus);
 
-    /*m_text_weight = new  QLabel(this);
-    m_text_weight->setText(tr("称重板子"));
-    m_text_weight->setFont(font);
-    m_color_weight = new  QLabel(this);
-    m_color_weight->setFixedSize(16,16);
-    m_color_weight->setStyleSheet(strColor);*/
 
     m_text_sortOne->setPalette(pe);
     m_text_sortTwo->setPalette(pe);
@@ -100,131 +94,61 @@ void CStateWid::Init()
 }
 
 
-//void CStateWid::setparamstate(ST_RUN_STATUS strstate)
+
+//void CStateWid::setparamstate(ST_RUN_MONITOR_STATUS_INFO strstate)
 //{
-//    m_pLog->LogDebug(
-//            "[%s][%s][%d] Run  State emType %d. Run  State iStatus:%d",
-//            __FILE__, __FUNCTION__, __LINE__,(int)strstate.emType,strstate.iStatus);
-//    if(strstate.emType == 3)
-//    {
-//        int IState = strstate.iStatus;
-//        if(IState == 0)
-//            m_color_thick->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//        else if(IState == 1)
-//            m_color_thick->setStyleSheet("border-radius:8px;background-color:orange");
-//        else if(IState == 2)
-//            m_color_thick->setStyleSheet("border-radius:8px;background-color:red");
+////    m_pLog->LogDebug(
+////            "[%s][%s][%d] setparamstate isRecover:%d codeId %d. errorInfo:%s .id:%d .name:%s",
+////            __FILE__, __FUNCTION__, __LINE__,strstate.isRecover,strstate.codeId,strstate.errorInfo,strstate.id,strstate.name);
 
-//        strBhInfo = strstate.szStatusInfo;
+//    QString codeid = QString::number(strstate.codeId);
+//    QString errorInfo = QString::fromUtf8(strstate.errorInfo);
+//    if(strstate.id == 100)
+//    {
+//        int IState = strstate.isRecover;
+//        if(IState == 1)
+//        {
+//            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+//            emit sigShowErrorMsg(2,"","");
+//        }
+//        else if(IState == 0)
+//        {
+//            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:red");
+//            emit sigShowErrorMsg(2,codeid,errorInfo);
+//        }
 //    }
 
-//    else if(strstate.emType == 2)
+//    else if(strstate.id == 500)
 //    {
-//        int IState = strstate.iStatus;
-//        if(IState == 0)
-//            m_color_waste->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//        else if(IState == 1)
-//            m_color_waste->setStyleSheet("border-radius:8px;background-color:orange");
-//        else if(IState == 2)
-//            m_color_waste->setStyleSheet("border-radius:8px;background-color:red");
-
-//        strFzInfo = strstate.szStatusInfo;
+//        int IState = strstate.isRecover;
+//        if(IState == 1)
+//        {
+//            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+//            emit sigShowErrorMsg(1,"","");
+//        }
+//        else if(IState == 0)
+//        {
+//            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:red");
+//            emit sigShowErrorMsg(1,codeid,errorInfo);
+//        }
 //    }
 
-//    else if(strstate.emType == 1)
+//    else if(strstate.id == 200)
 //    {
-//        int IState = strstate.iStatus;
-//        if(IState == 0)
-//            m_color_rfid->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//        else if(IState == 1)
-//            m_color_rfid->setStyleSheet("border-radius:8px;background-color:orange");
-//        else if(IState == 2)
-//            m_color_rfid->setStyleSheet("border-radius:8px;background-color:red");
-
-//        strService = strstate.szStatusInfo;
+//        int IState = strstate.isRecover;
+//        if(IState == 1)
+//        {
+//            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+//            emit sigShowErrorMsg(3,"","");
+//        }
+//        else if(IState == 0)
+//        {
+//            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:red");
+//            emit sigShowErrorMsg(3,codeid,errorInfo);
+//        }
 //    }
-
-//    else if(strstate.emType == 4)
-//    {
-//        int IState = strstate.iStatus;
-//        if(IState == 0)
-//            m_color_stamp->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//        else if(IState == 1)
-//            m_color_stamp->setStyleSheet("border-radius:8px;background-color:orange");
-//        else if(IState == 2)
-//            m_color_stamp->setStyleSheet("border-radius:8px;background-color:red");
-
-//        strGaiZInfo = strstate.szStatusInfo;
-//    }
-
-//    /*else if(strstate.emType == 4)
-//    {
-//        int IState = strstate.iStatus;
-//        if(IState == 0)
-//            m_color_weight->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//        else if(IState == 1)
-//            m_color_weight->setStyleSheet("border-radius:8px;background-color:orange");
-//        else if(IState == 2)
-//            m_color_weight->setStyleSheet("border-radius:8px;background-color:red");
-//    }*/
-
 
 //}
-
-void CStateWid::setparamstate(ST_RUN_MONITOR_STATUS_INFO strstate)
-{
-//    m_pLog->LogDebug(
-//            "[%s][%s][%d] setparamstate isRecover:%d codeId %d. errorInfo:%s .id:%d .name:%s",
-//            __FILE__, __FUNCTION__, __LINE__,strstate.isRecover,strstate.codeId,strstate.errorInfo,strstate.id,strstate.name);
-
-    QString codeid = QString::number(strstate.codeId);
-    QString errorInfo = QString::fromUtf8(strstate.errorInfo);
-    if(strstate.id == 100)
-    {
-        int IState = strstate.isRecover;
-        if(IState == 1)
-        {
-            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-            emit sigShowErrorMsg(2,"","");
-        }
-        else if(IState == 0)
-        {
-            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:red");
-            emit sigShowErrorMsg(2,codeid,errorInfo);
-        }
-    }
-
-    else if(strstate.id == 500)
-    {
-        int IState = strstate.isRecover;
-        if(IState == 1)
-        {
-            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-            emit sigShowErrorMsg(1,"","");
-        }
-        else if(IState == 0)
-        {
-            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:red");
-            emit sigShowErrorMsg(1,codeid,errorInfo);
-        }
-    }
-
-    else if(strstate.id == 200)
-    {
-        int IState = strstate.isRecover;
-        if(IState == 1)
-        {
-            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-            emit sigShowErrorMsg(3,"","");
-        }
-        else if(IState == 0)
-        {
-            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:red");
-            emit sigShowErrorMsg(3,codeid,errorInfo);
-        }
-    }
-
-}
 
 
 void CStateWid::click_on_BtnRfid()
@@ -245,4 +169,41 @@ void CStateWid::click_on_BtnWaste()
 void CStateWid::click_on_BtnStamp()
 {
     emit sigBtnClick(3,strGaiZInfo);
+}
+void CStateWid::status_slot(bool iSta_Dev,bool iSta_CanInit,bool iSta_CanStart)
+{
+    if(iSta_Dev == true)
+    {
+        m_color_sortOne->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+    }
+    else
+    {
+        m_color_sortOne->setStyleSheet("border-radius:8px;background-color:red");
+    }
+
+    if(iSta_CanInit == true)
+    {
+        m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+    }
+    else
+    {
+        m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:red");
+    }
+
+    if(iSta_CanStart == true)
+    {
+        m_color_sortThree->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+    }
+    else
+    {
+        m_color_sortThree->setStyleSheet("border-radius:8px;background-color:red");
+    }
+}
+void CStateWid::DataRec_slot()
+{
+
+    m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
+    QTimer::singleShot(1.5 * 1000,this,[=]{
+                    m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(255,245,238)");
+                });
 }

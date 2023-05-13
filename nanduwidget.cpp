@@ -16,6 +16,9 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
     //弹窗
     connect(m_ndMsgBox,SIGNAL(Clicked_btn_OK(int)),this,SLOT(click_on_msgok(int)),Qt::QueuedConnection);
     connect(m_ndMsgBox,SIGNAL(Clicked_btn_Cancel()),this,SLOT(click_on_msgcancel()),Qt::QueuedConnection);
+    //状态栏
+    connect(w, SIGNAL(status_send(bool,bool,bool)), m_pStateAreawid, SLOT(status_slot(bool,bool,bool)),Qt::QueuedConnection);
+    connect(w, SIGNAL(DataRec_sta()), m_pStateAreawid, SLOT(DataRec_slot()),Qt::QueuedConnection);
 
 
     //自动连接
@@ -25,12 +28,14 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
 void NanDuWidget::setupUi()
 {
     w = new MainWindow();//new MainWindow(this);
+//    w->setWindowFlags(Qt::Popup);
+
 //    w->show();
 //    connect(w, SIGNAL(signal_send(int)), this, SLOT(led_change(int)),Qt::QueuedConnection);
 //    setCentralWidget(widget);
     setAttribute(Qt::WA_StaticContents);
 //    setFixedSize(1920,1080);
-    setWindowTitle("子窗口");
+    setWindowTitle("南都汽车");
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/Config/Res/logo1"));
 
@@ -40,6 +45,7 @@ void NanDuWidget::setupUi()
     int currentScreenHei = screenRect.height();
 //    this->resize(currentScreenWid*3/4,currentScreenHei*4/5);
     this->resize(currentScreenWid,currentScreenHei);
+    w->move(currentScreenWid*1/5,currentScreenHei*1/5);
 
     m_ndMsgBox = new ndmassegebox(this);
     m_ndMsgBox->setGeometry((currentScreenWid-460)/2,(currentScreenHei-260)/2,460,260);
@@ -90,7 +96,7 @@ void NanDuWidget::setupUi()
 }
 NanDuWidget::~NanDuWidget()
 {
-    delete w;
+//    delete w;//与关闭按钮重复
 }
 
 void NanDuWidget::SelectButton(int iCurSelectNum)

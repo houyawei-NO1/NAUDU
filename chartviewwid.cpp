@@ -32,13 +32,15 @@ ChartViewWid::Init(QString str_name)
    qchart->addSeries(ser0);
    qchart->setTitle(str_name);
    qchart->setTitleFont(QFont("Microsoft YaHei", 30, QFont::Bold));
+   qchart->setTitleBrush(QColor(43,48,70));
+
 
 
    //创建x坐标
    QaX = new QDateTimeAxis;
    //格式
    QaX->setFormat("mm:ss");
-   QaX->setTickCount(8);
+   QaX->setTickCount(5);
    QaX->setTitleText("时间轴（分钟:秒）");
    QaX->setLabelsFont(QFont("Microsoft YaHei", 12, QFont::Bold));
 
@@ -64,37 +66,21 @@ void ChartViewWid::ElectricChange(int num){
 
     //获取当前时间
     QDateTime currentTime = QDateTime::currentDateTime();
-    //    //获取随机数
-    //    qsrand(QTime::currentTime().second());
-    //    int rand  = qrand()%100;//获取0~10之间的数
-
-    //获取初始化的qchart
-//    QChart *qchart =(QChart *)ui->graphicsView->chart();
-
-//    //获取之前的ser
-//    QLineSeries *ser0 = (QLineSeries *)ui->graphicsView->chart()->series().at(0);
-//    QLineSeries *ser1 = (QLineSeries *)ui->graphicsView->chart()->series().at(1);
-
-    //更新数据
-//    ser0->append(currentTime.toMSecsSinceEpoch(),cos(rand));
-//    ser1->append(currentTime.toMSecsSinceEpoch(),sin(rand));
-
-//    qchart->axisX()->setMin(QDateTime::currentDateTime().addSecs(-1*30));
-//    qchart->axisX()->setMax(QDateTime::currentDateTime().addSecs(1*30));
-
-//    ui->label->setText(QTime::currentTime().toString("hh:mm:ss"));
      ser0->append(currentTime.toMSecsSinceEpoch(),num);
-//     ser1->append(currentTime.toMSecsSinceEpoch(),numb);
-//     ser2->append(currentTime.toMSecsSinceEpoch(),numc);
-//     ser3->append(currentTime.toMSecsSinceEpoch(),numd);
+     if(num > 740 && num < 860)
+     {
+         ser0->setColor(QColor(67,207,124));
+         qchart->setTitleBrush(QColor(67,207,124));
+     }
+        else
+     {
+         ser0->setColor(color);
+         qchart->setTitleBrush(QColor(43,48,70));
+     }
 
 
-     if(num > 740 && num < 860)  ser0->setColor(Qt::green);
-        else ser0->setColor(color);
-
-
-     qchart->axisX()->setMin(QDateTime::currentDateTime().addSecs(-1*20));
-     qchart->axisX()->setMax(QDateTime::currentDateTime().addSecs(1*5));
+     qchart->axisX()->setMin(QDateTime::currentDateTime().addSecs(-1*5));
+     qchart->axisX()->setMax(QDateTime::currentDateTime().addSecs(1*1));
 
 
 }
