@@ -12,6 +12,7 @@ class LedWidget : public QWidget
 public:
     explicit LedWidget(QWidget *parent = nullptr);
     Init(QString str_name);
+    ReInit();
     LedChange(bool status);
 
 signals:

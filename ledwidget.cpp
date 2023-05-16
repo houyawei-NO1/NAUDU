@@ -41,6 +41,13 @@ LedWidget::Init(QString str_name)
      led_pic->setPixmap(QPixmap::fromImage(image));
      led_pic->resize(QSize(image.width(),image.height()));
  }
+LedWidget::ReInit()
+{
+    QImage image;
+    image.load(":/image/led_gray");
+    led_pic->setPixmap(QPixmap::fromImage(image));
+//    led_pic->resize(QSize(image.width(),image.height()));
+}
 LedWidget:: LedChange(bool status)
  {
      QImage image;

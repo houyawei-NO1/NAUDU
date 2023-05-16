@@ -24,7 +24,7 @@ void CStateWid::Init()
     QPalette pe;
     pe.setColor(QPalette::WindowText, Qt::white);
 
-    QString strColor="border-radius:8px;background-color:rgb(67,207,124)";
+    QString strColor="border-radius:8px;background-color:rgb(255,245,238)";
     m_vectext.append("开启设备");
     m_vectext.append("CAN初始化");
     m_vectext.append("CAN启动");
@@ -34,7 +34,7 @@ void CStateWid::Init()
     m_text_sortOne->setText(m_vectext.at(0));
     m_text_sortOne->setFont(font);
     m_color_sortOne = new  CDoubleButton(this);
-    m_color_sortOne->setFixedSize(16,16);
+    m_color_sortOne->setFixedSize(20,20);
     m_color_sortOne->setStyleSheet(strColor);
     m_color_sortOne->setFocusPolicy(Qt::NoFocus);
 
@@ -42,7 +42,7 @@ void CStateWid::Init()
     m_text_sortTwo->setText(m_vectext.at(1));
     m_text_sortTwo->setFont(font);
     m_color_sortTwo = new  CDoubleButton(this);
-    m_color_sortTwo->setFixedSize(16,16);
+    m_color_sortTwo->setFixedSize(20,20);
     m_color_sortTwo->setStyleSheet(strColor);
     m_color_sortTwo->setFocusPolicy(Qt::NoFocus);
 
@@ -50,7 +50,7 @@ void CStateWid::Init()
     m_text_sortThree->setText(m_vectext.at(2));
     m_text_sortThree->setFont(font);
     m_color_sortThree = new  CDoubleButton(this);
-    m_color_sortThree->setFixedSize(16,16);
+    m_color_sortThree->setFixedSize(20,20);
     m_color_sortThree->setStyleSheet(strColor);
     m_color_sortThree->setFocusPolicy(Qt::NoFocus);
 
@@ -58,7 +58,7 @@ void CStateWid::Init()
     m_text_sortFour->setText(m_vectext.at(3));
     m_text_sortFour->setFont(font);
     m_color_sortFour = new  CDoubleButton(this);
-    m_color_sortFour->setFixedSize(16,16);
+    m_color_sortFour->setFixedSize(20,20);
     m_color_sortFour->setStyleSheet(strColor);
     m_color_sortFour->setFocusPolicy(Qt::NoFocus);
 
@@ -93,62 +93,6 @@ void CStateWid::Init()
     connect(m_color_sortFour,SIGNAL(DoubleClick()),this,SLOT(click_on_BtnStamp()));
 }
 
-
-
-//void CStateWid::setparamstate(ST_RUN_MONITOR_STATUS_INFO strstate)
-//{
-////    m_pLog->LogDebug(
-////            "[%s][%s][%d] setparamstate isRecover:%d codeId %d. errorInfo:%s .id:%d .name:%s",
-////            __FILE__, __FUNCTION__, __LINE__,strstate.isRecover,strstate.codeId,strstate.errorInfo,strstate.id,strstate.name);
-
-//    QString codeid = QString::number(strstate.codeId);
-//    QString errorInfo = QString::fromUtf8(strstate.errorInfo);
-//    if(strstate.id == 100)
-//    {
-//        int IState = strstate.isRecover;
-//        if(IState == 1)
-//        {
-//            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//            emit sigShowErrorMsg(2,"","");
-//        }
-//        else if(IState == 0)
-//        {
-//            m_color_sortTwo->setStyleSheet("border-radius:8px;background-color:red");
-//            emit sigShowErrorMsg(2,codeid,errorInfo);
-//        }
-//    }
-
-//    else if(strstate.id == 500)
-//    {
-//        int IState = strstate.isRecover;
-//        if(IState == 1)
-//        {
-//            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//            emit sigShowErrorMsg(1,"","");
-//        }
-//        else if(IState == 0)
-//        {
-//            m_color_sortThree->setStyleSheet("border-radius:8px;background-color:red");
-//            emit sigShowErrorMsg(1,codeid,errorInfo);
-//        }
-//    }
-
-//    else if(strstate.id == 200)
-//    {
-//        int IState = strstate.isRecover;
-//        if(IState == 1)
-//        {
-//            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-//            emit sigShowErrorMsg(3,"","");
-//        }
-//        else if(IState == 0)
-//        {
-//            m_color_sortFour->setStyleSheet("border-radius:8px;background-color:red");
-//            emit sigShowErrorMsg(3,codeid,errorInfo);
-//        }
-//    }
-
-//}
 
 
 void CStateWid::click_on_BtnRfid()
@@ -203,7 +147,7 @@ void CStateWid::DataRec_slot()
 {
 
     m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(67,207,124)");
-    QTimer::singleShot(1.5 * 1000,this,[=]{
+    QTimer::singleShot(1 * 1000,this,[=]{
                     m_color_sortFour->setStyleSheet("border-radius:8px;background-color:rgb(255,245,238)");
                 });
 }

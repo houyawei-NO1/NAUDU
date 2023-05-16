@@ -10,6 +10,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setStyleSheet("background-color:black;color:white");
+    ui->groupBox->setStyleSheet("background-color:rgb(43,48,70);color:white;font-size:20px");
+    ui->groupBox_2->setStyleSheet("background-color:rgb(43,48,70);color:white;font-size:20px");
+    ui->groupBox_3->setStyleSheet("background-color:rgb(43,48,70);color:white;font-size:20px");
+    ui->groupBox_4->setStyleSheet("background-color:rgb(43,48,70);color:white;font-size:20px");
+    ui->tableWidget->setStyleSheet("background-color:rgb(43,48,70);color:black;font-size:20px");
+//    this->setStyleSheet("background-color:rgb(43,48,70);color:white");
     QStringList listHeader;
     listHeader << "系统时间" << "时间标识" << "时间标识(s)" << "CAN通道" << "传输方向" << "ID号" << "帧类型" << "帧格式" << "长度" << "数据";
 
@@ -18,16 +25,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnCount(listHeader.count());
     ui->tableWidget->setHorizontalHeaderLabels(listHeader);
 
-    ui->tableWidget->setColumnWidth(0,120);
-    ui->tableWidget->setColumnWidth(1,120);
-    ui->tableWidget->setColumnWidth(2,120);
-    ui->tableWidget->setColumnWidth(3,100);
-    ui->tableWidget->setColumnWidth(4,80);
-    ui->tableWidget->setColumnWidth(5,120);
-    ui->tableWidget->setColumnWidth(6,90);
-    ui->tableWidget->setColumnWidth(7,90);
-    ui->tableWidget->setColumnWidth(8,80);
-    ui->tableWidget->setColumnWidth(9,250);
+
+    ui->tableWidget->setColumnWidth(0,140);
+    ui->tableWidget->setColumnWidth(1,140);
+    ui->tableWidget->setColumnWidth(2,140);
+    ui->tableWidget->setColumnWidth(3,140);
+    ui->tableWidget->setColumnWidth(4,140);
+    ui->tableWidget->setColumnWidth(5,140);
+    ui->tableWidget->setColumnWidth(6,140);
+    ui->tableWidget->setColumnWidth(7,140);
+    ui->tableWidget->setColumnWidth(8,140);
+    ui->tableWidget->setColumnWidth(9,270);
 
     //for(int i = 0;i < 9;i ++)
     //    ui->tableWidget->horizontalHeader()->setSectionResizeMode(i,QHeaderView::Stretch);
@@ -36,15 +44,29 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(CheckEverySec()));
     canthread = new CANThread();
     connect(canthread,&CANThread::getProtocolData,this,&MainWindow::onGetProtocolData);
     connect(canthread,&CANThread::boardInfo,this,&MainWindow::onBoardInfo);
 
-    iFlag_zuoyi,iFlag_lihe,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
-    iFlag_tsq_diwei,iFlag_siqu,iFlag_tsq_jiaodu = false;
+    iFlag_zuoyi = false;
+    iFlag_lihe = false;
+    iFlag_kongdang = false;
+    iFlag_shuangbian = false;
+    iFlag_pto_shineng = false;
+    iFlag_pto_waibu = false;
+    iFlag_tsq_weizhi = false;
+    iFlag_tsq_diwei =false;
+    iFlag_siqu = false;
+    iFlag_tsq_jiaodu = false;
     iFlag_zhuche_zhongxiaotuo = true;
     iSta_Dev,iSta_CanInit,iSta_CanStart = false;
+    iSta_RecIng = false;
 
+
+    timer->start(2000);
 
 
 //    Widget.show();
@@ -128,12 +150,14 @@ void MainWindow::onGetProtocolData(VCI_CAN_OBJ *vci,unsigned int dwRel,unsigned 
         messageList << str;//数据
         */
 
-//        AddDataToList(messageList);
+        AddDataToList(messageList);
         DataAnalysis(messageList);
 
 
     }
-    emit DataRec_sta();
+
+    iSta_RecIng = true;
+
 }
 
 QString versionStr(USHORT ver)
@@ -373,7 +397,7 @@ void MainWindow::DataAnalysis(QStringList messageList)
             bool ok;
             quint32 hex_data_head = string_data_head.toUInt(&ok,16);
             quint32 hex_data_tail = string_data_tail.toUInt(&ok,16);
-            quint32 and_result;
+            quint32 and_result = 0x00000000 ;
 
 //                qDebug()<<"接收到的数据："<<string_data_head.toLatin1()
 //                        <<"前四个字节hex_data_head:"<<QString::number(hex_data_head ,16).toUpper()<<endl;
@@ -413,15 +437,15 @@ void MainWindow::DataAnalysis(QStringList messageList)
 //                qDebug() <<"离合关"<<endl;
             }
             //空挡开关检测
-            and_result =  hex_data_head & 0x50000000 ;
-            if (and_result == 0x50000000 && iFlag_kongdang == false)
+            and_result =  hex_data_head & 0x40000000 ;
+            if (and_result == 0x40000000 && iFlag_kongdang == false)
             {
 
                iFlag_kongdang = true ;
                emit signal_send(3,iFlag_kongdang);
 //               qDebug() <<"空挡开"<<endl;
             }
-            else if (and_result == 0x10000000 && iFlag_kongdang == true)
+            else if (and_result == 0x00000000 && iFlag_kongdang == true)
             {
                iFlag_kongdang = false ;
                emit signal_send(3,iFlag_kongdang);
@@ -594,4 +618,34 @@ void MainWindow::ResetDev()
 //    on_pushButton_2_clicked();//初始化
     on_pushButton_3_clicked();//启动
 }
+void MainWindow::CheckEverySec()
+{
+    if(iSta_RecIng == true)//数据接收中，设备上电状态
+    {
+    emit DataRec_sta();
+//        qDebug()<<"CheckEverySec"<<endl;
+    }
+    else//没有接收到数据，界面重新初始化，为下一个设备上电做准备
+    {
+    StaReInit();//状态初始化
+    emit UpdateUi();
+    }
+    iSta_RecIng = false;
+}
+void MainWindow::StaReInit()
+{
+    iFlag_zuoyi = false;
+    iFlag_lihe = false;
+    iFlag_kongdang = false;
+    iFlag_shuangbian = false;
+    iFlag_pto_shineng = false;
+    iFlag_pto_waibu = false;
+    iFlag_tsq_weizhi = false;
+    iFlag_tsq_diwei =false;
+    iFlag_siqu = false;
+    iFlag_tsq_jiaodu = false;
+    iFlag_zhuche_zhongxiaotuo = true;
+    iSta_Dev,iSta_CanInit,iSta_CanStart = false;
+    iSta_RecIng = false;
 
+}

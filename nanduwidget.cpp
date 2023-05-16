@@ -8,6 +8,7 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
     //功能状态
     connect(w, SIGNAL(signal_send(int,bool)), mainwidget, SLOT(led_change(int,bool)),Qt::QueuedConnection);
     connect(w, SIGNAL(electric_send(int,int,int,int)), mainwidget, SLOT(electric_change(int,int,int,int)),Qt::QueuedConnection);
+    connect(w,SIGNAL(UpdateUi()),mainwidget,SLOT(ReInit()),Qt::QueuedConnection);
     //菜单栏
     connect(m_pMenuBar,SIGNAL(CurSelectPage(int)), this, SLOT(SelectButton(int)),Qt::QueuedConnection);
     connect(m_pMenuBar, SIGNAL(showMax()), this, SLOT(click_on_Max()),Qt::QueuedConnection);
@@ -28,16 +29,17 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
 void NanDuWidget::setupUi()
 {
     w = new MainWindow();//new MainWindow(this);
-//    w->setWindowFlags(Qt::Popup);
+//    w->setWindowFlags(Qt::Popup);//弹出窗口，点击南都窗口后，设置界面隐藏
 
 //    w->show();
 //    connect(w, SIGNAL(signal_send(int)), this, SLOT(led_change(int)),Qt::QueuedConnection);
 //    setCentralWidget(widget);
     setAttribute(Qt::WA_StaticContents);
 //    setFixedSize(1920,1080);
-    setWindowTitle("南都汽车");
+    setWindowTitle("安全控制器检测");
     setWindowFlags(Qt::FramelessWindowHint);
-    setWindowIcon(QIcon(":/Config/Res/logo1"));
+    setWindowIcon(QIcon(":/image/logo"));
+
 
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
@@ -45,7 +47,7 @@ void NanDuWidget::setupUi()
     int currentScreenHei = screenRect.height();
 //    this->resize(currentScreenWid*3/4,currentScreenHei*4/5);
     this->resize(currentScreenWid,currentScreenHei);
-    w->move(currentScreenWid*1/5,currentScreenHei*1/5);
+//    w->move(currentScreenWid*1/5,currentScreenHei*1/5);
 
     m_ndMsgBox = new ndmassegebox(this);
     m_ndMsgBox->setGeometry((currentScreenWid-460)/2,(currentScreenHei-260)/2,460,260);
@@ -69,6 +71,7 @@ void NanDuWidget::setupUi()
     mainwidget = new MainWidget(this);
 
     m_StackedWidget->addWidget(mainwidget);
+    m_StackedWidget->addWidget(w);
 
 
    pVSubLayOut->addWidget(m_pMenuBar);
@@ -103,23 +106,25 @@ void NanDuWidget::SelectButton(int iCurSelectNum)
 {
 
     int iturnNum = 0;
-    if(iCurSelectNum < 4)
+    if(iCurSelectNum < 2)
         iturnNum = iCurSelectNum;
     else
         iturnNum = 0;
 
-//    m_StackedWidget->setCurrentIndex(iturnNum);
-    if(iCurSelectNum==1)
+    m_StackedWidget->setCurrentIndex(iturnNum);
+    if(iCurSelectNum==2)
     {
         qDebug()<<"w->ResetDev()"<<endl;
         w->ResetDev();
     }
 
-    if(iCurSelectNum==2)
-    {
+//    if(iCurSelectNum==1)
+//    {
 
-        w->show();
-    }
+////        w->show();
+////        m_StackedWidget->setCurrentIndex(1);
+
+//    }
 
     if(iCurSelectNum == 4)
     {
@@ -165,11 +170,14 @@ void NanDuWidget::click_on_msgok(int msgtype)
     if(msgtype == 0)
     {
 
+        //重启操作
+        //qDedbug()<<"重启操作"<<endl;
         m_pMenuBar->setFirBtnChecked();
+        qApp->exit(886);
     }
     else if(msgtype == 1)
     {
-
+        //关机
         m_pMenuBar->setFirBtnChecked();
     }
 

@@ -21,10 +21,12 @@ public:
 private:
     QChart *qchart;
     QChartView *chartView;
-    QLineSeries *ser0;//,*ser1,*ser2,*ser3;
+    QLineSeries *line_main,*line_low,*line_high;//,*ser1,*ser2,*ser3;
     QDateTimeAxis *QaX;
     QValueAxis *QaY;
     QColor color;
+    int low_value = 740;
+    int high_value = 860;
 
 };
 

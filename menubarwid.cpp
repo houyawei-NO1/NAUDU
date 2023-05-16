@@ -32,9 +32,13 @@ void MenuBarWid::Init()
     QHBoxLayout *title_layout = new QHBoxLayout();
     m_pVersion_title = new QLabel(this);
     QLabel *logo_label = new QLabel(this);
-    QPixmap pixmap(":/Config/Res/logo.png");
-    logo_label->setPixmap(pixmap);
+    QPixmap pixmap(":/image/logo");
+    logo_label->setPixmap(pixmap.scaled(50,50,Qt::KeepAspectRatioByExpanding));
     logo_label->setCursor(Qt::PointingHandCursor);
+//    QImage image;
+//    image.load(":/image/logo");
+//    logo_label->setPixmap(QPixmap::fromImage(image));
+//    logo_label->resize(QSize(50,50));
 
     m_pVersion_title->setMaximumHeight(40);
     logo_label->setMaximumWidth(120);
@@ -110,12 +114,12 @@ void MenuBarWid::Init()
 
 void MenuBarWid::translateLanguage()
 {
-    m_pVersion_title->setText("南都汽车安全控制器检测");
+    m_pVersion_title->setText("南都汽车电子安全控制器检测");
     m_pVersion_title->setStyleSheet("color:white;font:25px");
 
     pushButtonGroup->button(0)->setText("主界面");
-    pushButtonGroup->button(1)->setText("复位");
-    pushButtonGroup->button(2)->setText("设置");
+    pushButtonGroup->button(1)->setText("设置");
+    pushButtonGroup->button(2)->setText("复位");
     pushButtonGroup->button(3)->setText("数据接收");
     pushButtonGroup->button(4)->setText("重启");
     pushButtonGroup->button(5)->setText("关机");

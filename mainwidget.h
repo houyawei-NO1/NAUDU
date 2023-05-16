@@ -19,11 +19,13 @@ public:
     int currentScreenHei;//整个主部件区域大小
     Init();
 
+
 signals:
 
 public slots:
     void led_change(int,bool);
     void electric_change(int,int,int,int);
+    void ReInit();
 
 private:
     LedWidget *ledwidget[12];

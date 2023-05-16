@@ -36,7 +36,7 @@ MainWidget::Init()
     gridlayout->addWidget(ledwidget[1],0,2,2,2);
     ledwidget[2] = new LedWidget(this);
     ledwidget[2]->show();
-    ledwidget[2]->Init("驻车制动(大托)");
+    ledwidget[2]->Init("驻车制动(大拖)");
     gridlayout->addWidget(ledwidget[2],0,4,2,2);
 
     ledwidget[3] = new LedWidget(this);
@@ -111,5 +111,15 @@ void MainWidget::electric_change(int numa,int numb,int numc,int numd)
     chartviewwid[2]->ElectricChange(numc);
     chartviewwid[3]->ElectricChange(numd);
 }
+void MainWidget::ReInit()
+{
+    //新控制器上电前重新初始化准备
+    //led灯状态重置
+    for(int i= 0;i<12;++i)
+    {
+         ledwidget[i]->ReInit();
+    }
+}
+
 
 
