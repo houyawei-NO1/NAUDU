@@ -18,9 +18,11 @@ public:
     int currentScreenWid;//整个主部件区域大小
     int currentScreenHei;//整个主部件区域大小
     Init();
+    void Cal_TotleNum();
 
 
 signals:
+    void send_TotleNum(int);
 
 public slots:
     void led_change(int,bool);
@@ -32,6 +34,7 @@ private:
     ChartViewWid *chartviewwid[4];
     QGridLayout *gridlayout;
     QLabel *a,*b,*c,*d;
+    int m_totlenum;
 };
 
 #endif // MAINWIDGET_H

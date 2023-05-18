@@ -16,6 +16,7 @@ public:
     explicit ChartViewWid(QWidget *parent = nullptr);
     void ElectricChange(int numa);
     Init(QString str_name);
+    ReInit();
 
 
 private:

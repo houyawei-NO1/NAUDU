@@ -30,6 +30,8 @@ public:
 public slots:
        void slot_btnGroupClicked(int btnNum);
        void slotSetTotleNum();
+       void rec_TotleNum(int num);
+       void ReInit();
 
 private:
    QWidget *widget=new QWidget(this);
@@ -50,6 +52,7 @@ private:
     bool m_bMode;
 
     QLabel* m_lbTotleNum;
+    QLabel* lb_TotleNum;
     int m_ItotleNum;
 };
 

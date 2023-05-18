@@ -2,6 +2,7 @@
 
 MenuBarWid::MenuBarWid(QWidget *parent) : QWidget(parent)
 {
+    lb_TotleNum = new QLabel(this);
     setupUi();
 
 }
@@ -17,6 +18,7 @@ void MenuBarWid::setupUi()
    m_ItotleNum = 0;
 
    m_bMode = true;
+
    Init();
 }
 
@@ -75,12 +77,12 @@ void MenuBarWid::Init()
 
 
     QHBoxLayout *count_layout = new QHBoxLayout();
-    QLabel* lb_TotleNum = new QLabel(this);
-    lb_TotleNum->setStyleSheet("color:#66ff00;font:20px");
-//    lb_TotleNum->setText("总数:");
+
+    lb_TotleNum->setStyleSheet("color:rgb(255,245,238);font:25px");
+    lb_TotleNum->setText("共15个检验项目，当前通过项目:");
     m_lbTotleNum = new QLabel(this);
-    m_lbTotleNum->setStyleSheet("color:#66ff00;font:20px");
-//    m_lbTotleNum->setText("0 ");
+    m_lbTotleNum->setStyleSheet("color:rgb(255,245,238);font:25px");
+    m_lbTotleNum->setText("0");
     count_layout->addWidget(lb_TotleNum);
     count_layout->addWidget(m_lbTotleNum);
     count_layout->setSpacing(5);
@@ -150,4 +152,21 @@ void MenuBarWid::slotSetTotleNum()
 {
     m_ItotleNum++;
     m_lbTotleNum->setText(QString::number(m_ItotleNum));
+
+}
+
+void MenuBarWid::rec_TotleNum(int num)
+{
+    m_lbTotleNum->setText(QString::number(num));
+    if (num == 11)
+    {
+    lb_TotleNum->setText("当前产品检验通过");
+    m_lbTotleNum->setText("");
+    }
+    qDebug()<<num<<endl;
+}
+void MenuBarWid::ReInit()
+{
+    lb_TotleNum->setText("共15个检验项目，当前通过项目:");
+    m_lbTotleNum->setText("0");
 }

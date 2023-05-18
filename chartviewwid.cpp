@@ -36,8 +36,7 @@ ChartViewWid::Init(QString str_name)
    qchart->addSeries(line_low);
    qchart->addSeries(line_high);
 
-   line_low->setPen(QPen(Qt::green,2,Qt::SolidLine));
-   line_high->setPen(QPen(Qt::green,2,Qt::SolidLine));
+
    qchart->setTitle(str_name);
    qchart->setTitleFont(QFont("Microsoft YaHei", 30, QFont::Bold));
    qchart->setTitleBrush(QColor(43,48,70));
@@ -70,10 +69,13 @@ ChartViewWid::Init(QString str_name)
    qchart->setAxisX(QaX,line_high);
    qchart->setAxisY(QaY,line_high);
 
-   //初始化完成后取线条颜色
-   color = line_main->color();
    line_low->append(0,low_value);
    line_high->append(0,high_value);
+   //初始化完成后取线条颜色
+   color = line_main->color();
+   line_low->setPen(QPen(QColor(233,150,122),2,Qt::SolidLine));
+   line_high->setPen(QPen(QColor(233,150,122),2,Qt::SolidLine));
+
 }
 
 //数据更新
@@ -112,4 +114,7 @@ void ChartViewWid::ElectricChange(int num){
 //    line_low->removePoints(0,3);
 //    line_high->removePoints(0,3);
 
+}
+ChartViewWid::ReInit(){
+    line_main->removePoints(0,line_main->count());
 }

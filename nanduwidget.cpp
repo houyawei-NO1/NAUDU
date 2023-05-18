@@ -9,6 +9,9 @@ NanDuWidget::NanDuWidget(QWidget *parent) : QWidget(parent)
     connect(w, SIGNAL(signal_send(int,bool)), mainwidget, SLOT(led_change(int,bool)),Qt::QueuedConnection);
     connect(w, SIGNAL(electric_send(int,int,int,int)), mainwidget, SLOT(electric_change(int,int,int,int)),Qt::QueuedConnection);
     connect(w,SIGNAL(UpdateUi()),mainwidget,SLOT(ReInit()),Qt::QueuedConnection);
+    //窗口部件计数
+    connect(mainwidget, SIGNAL(send_TotleNum(int)), m_pMenuBar, SLOT(rec_TotleNum(int)),Qt::QueuedConnection);
+    connect(w,SIGNAL(UpdateUi()),m_pMenuBar,SLOT(ReInit()),Qt::QueuedConnection);
     //菜单栏
     connect(m_pMenuBar,SIGNAL(CurSelectPage(int)), this, SLOT(SelectButton(int)),Qt::QueuedConnection);
     connect(m_pMenuBar, SIGNAL(showMax()), this, SLOT(click_on_Max()),Qt::QueuedConnection);

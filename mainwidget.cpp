@@ -94,6 +94,8 @@ MainWidget::Init()
     gridlayout->addWidget(chartviewwid[1],0,10,4,4);
     gridlayout->addWidget(chartviewwid[2],4,6,4,4);
     gridlayout->addWidget(chartviewwid[3],4,10,4,4);
+    electric_change(0,0,0,0);
+    m_totlenum = 0;
 
 
 }
@@ -101,6 +103,7 @@ void MainWidget::led_change(int id, bool iflag)
 {
 //    qDebug()<<"id:"<<id<<"  iflag:"<<iflag<<endl;
     ledwidget[id]->LedChange(iflag);
+    Cal_TotleNum();
 }
 
 void MainWidget::electric_change(int numa,int numb,int numc,int numd)
@@ -119,6 +122,21 @@ void MainWidget::ReInit()
     {
          ledwidget[i]->ReInit();
     }
+    for(int j =0;j<4;j++)
+    {
+        chartviewwid[j]->ReInit();
+    }
+    m_totlenum = 0;
+}
+void MainWidget::Cal_TotleNum()
+{
+    m_totlenum = 0;
+    for(int i= 0;i<12;++i)
+    {
+         m_totlenum = ledwidget[i]->m_result + m_totlenum;
+    }
+    send_TotleNum(m_totlenum);
+//    qDebug()<<m_totlenum<<endl;
 }
 
 
