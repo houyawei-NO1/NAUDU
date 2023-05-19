@@ -18,7 +18,7 @@ public:
     int currentScreenWid;//整个主部件区域大小
     int currentScreenHei;//整个主部件区域大小
     Init();
-    void Cal_TotleNum();
+
 
 
 signals:
@@ -28,6 +28,7 @@ public slots:
     void led_change(int,bool);
     void electric_change(int,int,int,int);
     void ReInit();
+    void Cal_TotleNum();
 
 private:
     LedWidget *ledwidget[12];

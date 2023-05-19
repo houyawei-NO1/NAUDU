@@ -18,16 +18,20 @@ public:
     Init(QString str_name);
     ReInit();
 
+    int m_hege;
+
 
 private:
     QChart *qchart;
     QChartView *chartView;
-    QLineSeries *line_main,*line_low,*line_high;//,*ser1,*ser2,*ser3;
+    QLineSeries *line_main;
+    QLineSeries *line_low,*line_high;//,*ser1,*ser2,*ser3;
     QDateTimeAxis *QaX;
     QValueAxis *QaY;
     QColor color;
-    int low_value = 740;
-    int high_value = 860;
+    int low_value = 730;
+    int high_value = 870;
+
 
 };
 

@@ -158,12 +158,12 @@ void MenuBarWid::slotSetTotleNum()
 void MenuBarWid::rec_TotleNum(int num)
 {
     m_lbTotleNum->setText(QString::number(num));
-    if (num == 11)
+    if (num == 15)
     {
     lb_TotleNum->setText("当前产品检验通过");
     m_lbTotleNum->setText("");
     }
-    qDebug()<<num<<endl;
+//    qDebug()<<num<<endl;
 }
 void MenuBarWid::ReInit()
 {

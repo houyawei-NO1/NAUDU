@@ -22,6 +22,8 @@ ChartViewWid::ChartViewWid(QWidget *parent) : QWidget(parent)
    line_low = new QLineSeries;
    line_high = new QLineSeries;
 
+   m_hege = 0;
+
 }
 ChartViewWid::Init(QString str_name)
 {
@@ -88,33 +90,41 @@ void ChartViewWid::ElectricChange(int num){
     line_low->append(currentTime.toMSecsSinceEpoch(),low_value);
     line_high->append(currentTime.toMSecsSinceEpoch(),high_value);
 
+    //
     if(num > low_value && num < high_value)
     {
      line_main->setColor(QColor(67,207,124));
-     qchart->setTitleBrush(QColor(67,207,124));
+//     qchart->setTitleBrush(QColor(67,207,124));
+//     qDebug()<<line_main->
+     m_hege = 1;
     }
     else
     {
      line_main->setColor(color);
-     qchart->setTitleBrush(QColor(43,48,70));
+//     qchart->setTitleBrush(QColor(43,48,70));
+     m_hege = 0;
     }
 
+/**
+* @brief 注释
+* @author houyawei
+* @date 2023/05/18
+* setTitleBrush()使图表标题颜色改变
+*在qt5.6.3上面，三个以及三个以上图表同时使用函数setTitleBrush()，会使界面卡顿
+*在qt5.9.3上面同时使用四个函数，功能正常。
+*/
 
     qchart->axisX()->setMin(QDateTime::currentDateTime().addSecs(-1*6));
     qchart->axisX()->setMax(QDateTime::currentDateTime().addSecs(0));
 
 
-//    qDebug()<<"line_main"<<line_main->count();
-//     qDebug()<<"line_low"<<line_low->count();
-//      qDebug()<<"line_high"<<line_high->count();
     if(line_main->count()>70) line_main->removePoints(0,3);
     if(line_low->count()>70) line_low->removePoints(0,3);
     if(line_high->count()>70) line_high->removePoints(0,3);
-//    line_main->removePoints(0,3);
-//    line_low->removePoints(0,3);
-//    line_high->removePoints(0,3);
+
 
 }
 ChartViewWid::ReInit(){
     line_main->removePoints(0,line_main->count());
+    m_hege = 0;
 }

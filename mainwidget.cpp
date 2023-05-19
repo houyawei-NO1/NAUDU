@@ -19,6 +19,11 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
     gridlayout->setMargin(10);
 //    setLayout(gridlayout);
 
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(Cal_TotleNum()));
+    timer->start(1000);
+
+
 }
 MainWidget::Init()
 {
@@ -103,7 +108,7 @@ void MainWidget::led_change(int id, bool iflag)
 {
 //    qDebug()<<"id:"<<id<<"  iflag:"<<iflag<<endl;
     ledwidget[id]->LedChange(iflag);
-    Cal_TotleNum();
+//    Cal_TotleNum();
 }
 
 void MainWidget::electric_change(int numa,int numb,int numc,int numd)
@@ -134,6 +139,10 @@ void MainWidget::Cal_TotleNum()
     for(int i= 0;i<12;++i)
     {
          m_totlenum = ledwidget[i]->m_result + m_totlenum;
+    }
+    for(int j =0;j<4;j++)
+    {
+        m_totlenum = chartviewwid[j]->m_hege + m_totlenum;
     }
     send_TotleNum(m_totlenum);
 //    qDebug()<<m_totlenum<<endl;
