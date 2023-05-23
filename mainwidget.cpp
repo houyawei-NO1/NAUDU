@@ -102,6 +102,8 @@ MainWidget::Init()
     electric_change(0,0,0,0);
     m_totlenum = 0;
 
+    resultDialog = new ResultDialog(this);
+
 
 }
 void MainWidget::led_change(int id, bool iflag)

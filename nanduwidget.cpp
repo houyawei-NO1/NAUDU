@@ -39,7 +39,7 @@ void NanDuWidget::setupUi()
 //    setCentralWidget(widget);
     setAttribute(Qt::WA_StaticContents);
 //    setFixedSize(1920,1080);
-    setWindowTitle("安全控制器检测");
+    setWindowTitle("南都汽车电子安全控制器检测");
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/image/logo"));
 

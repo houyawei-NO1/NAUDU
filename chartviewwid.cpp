@@ -94,14 +94,14 @@ void ChartViewWid::ElectricChange(int num){
     if(num > low_value && num < high_value)
     {
      line_main->setColor(QColor(67,207,124));
-//     qchart->setTitleBrush(QColor(67,207,124));
+     qchart->setTitleBrush(QColor(67,207,124));
 //     qDebug()<<line_main->
      m_hege = 1;
     }
     else
     {
      line_main->setColor(color);
-//     qchart->setTitleBrush(QColor(43,48,70));
+     qchart->setTitleBrush(QColor(43,48,70));
      m_hege = 0;
     }
 

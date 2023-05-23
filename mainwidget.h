@@ -9,6 +9,7 @@
 #include <QDebug>
 #include "ledwidget.h"
 #include "chartviewwid.h"
+#include "resultdialog.h"
 
 class MainWidget : public QWidget
 {
@@ -33,6 +34,7 @@ public slots:
 private:
     LedWidget *ledwidget[12];
     ChartViewWid *chartviewwid[4];
+    ResultDialog *resultDialog;
     QGridLayout *gridlayout;
     QLabel *a,*b,*c,*d;
     int m_totlenum;

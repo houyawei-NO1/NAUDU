@@ -9,5 +9,6 @@
         <file>led_yellow.png</file>
         <file>led_blue.png</file>
         <file>logo.png</file>
+        <file>logo.ico</file>
     </qresource>
 </RCC>

@@ -8,8 +8,9 @@ QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = CAN
+TARGET = NANDU
 TEMPLATE = app
+RC_FILE += logo.rc
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -39,7 +40,8 @@ SOURCES += \
     clickedlabel.cpp \
     mainwidget.cpp \
     ledwidget.cpp \
-    chartviewwid.cpp
+    chartviewwid.cpp \
+    resultdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +57,8 @@ HEADERS += \
     clickedlabel.h \
     mainwidget.h \
     ledwidget.h \
-    chartviewwid.h
+    chartviewwid.h \
+    resultdialog.h
 
 FORMS += \
         mainwindow.ui
@@ -73,3 +76,6 @@ DEPENDPATH += $$PWD/.
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    logo.rc
