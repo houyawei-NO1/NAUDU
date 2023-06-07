@@ -86,7 +86,8 @@ LedWidget::LedWidget(QWidget *parent) : QWidget(parent)
 
 LedWidget::Init(QString str_name)
  {
-     led_name->setText(str_name);
+     m_name  = str_name;
+     led_name->setText(m_name);
      QImage image;
      image.load(":/image/led_gray");
      led_pic->setPixmap(QPixmap::fromImage(image));

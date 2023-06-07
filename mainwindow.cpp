@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     iFlag_zuoyi = false;
     iFlag_lihe = false;
+    iFlag_zhuche_datuo =false;
     iFlag_kongdang = false;
     iFlag_shuangbian = false;
     iFlag_pto_shineng = false;
@@ -436,6 +437,21 @@ void MainWindow::DataAnalysis(QStringList messageList)
                 emit signal_send(1,iFlag_lihe);
 //                qDebug() <<"离合关"<<endl;
             }
+            //驻车制动大拖开关检测
+            and_result =  hex_data_head & 0x10000000 ;
+            if (and_result == 0x10000000 && iFlag_zhuche_datuo == false)
+            {
+
+               iFlag_zhuche_datuo = true ;
+               emit signal_send(2,iFlag_zhuche_datuo);
+//               qDebug() <<"驻车制动大拖开"<<endl;
+            }
+            else if (and_result == 0x00000000 && iFlag_zhuche_datuo == true)
+            {
+               iFlag_zhuche_datuo = false ;
+               emit signal_send(2,iFlag_zhuche_datuo);
+//               qDebug() <<"驻车制动大拖关"<<endl;
+            }
             //空挡开关检测
             and_result =  hex_data_head & 0x40000000 ;
             if (and_result == 0x40000000 && iFlag_kongdang == false)
@@ -636,6 +652,7 @@ void MainWindow::StaReInit()
 {
     iFlag_zuoyi = false;
     iFlag_lihe = false;
+    iFlag_zhuche_datuo = false;
     iFlag_kongdang = false;
     iFlag_shuangbian = false;
     iFlag_pto_shineng = false;

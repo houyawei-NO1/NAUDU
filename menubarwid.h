@@ -6,6 +6,7 @@
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QDebug>
+#include <QProgressBar>
 #include "pushbutton.h"
 #include "toolbutton.h"
 
@@ -54,6 +55,7 @@ private:
     QLabel* m_lbTotleNum;
     QLabel* lb_TotleNum;
     int m_ItotleNum;
+    QProgressBar *ProgressBar;
 };
 
 #endif // MENUBARWID_H

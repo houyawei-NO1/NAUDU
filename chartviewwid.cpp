@@ -11,7 +11,7 @@ ChartViewWid::ChartViewWid(QWidget *parent) : QWidget(parent)
    //把chart放到容器里
    chartView = new QChartView(this);
    chartView->setStyleSheet("background-color:rgb(43,48,70)");
-   chartView->resize(497,477);//宽，高
+   chartView->resize(505,430);//宽，高
 
    //设置抗锯齿
    chartView->setChart(qchart);
@@ -29,8 +29,9 @@ ChartViewWid::Init(QString str_name)
 {
 
 
+    m_name = str_name;
    //设置名字
-   line_main->setName(str_name);
+   line_main->setName(m_name);
    line_high->setName("正常电流区间");
 
    //放入charts里
@@ -39,8 +40,8 @@ ChartViewWid::Init(QString str_name)
    qchart->addSeries(line_high);
 
 
-   qchart->setTitle(str_name);
-   qchart->setTitleFont(QFont("Microsoft YaHei", 30, QFont::Bold));
+   qchart->setTitle(m_name);
+   qchart->setTitleFont(QFont("Microsoft YaHei", 25, QFont::Bold));
    qchart->setTitleBrush(QColor(43,48,70));
 
 
@@ -57,7 +58,7 @@ ChartViewWid::Init(QString str_name)
    QaY = new QValueAxis;
    //设置范围
    QaY->setRange(0,1400);
-   QaY->setTickCount(15);
+   QaY->setTickCount(8);
    QaY->setTitleText("电流值（mA）");
    QaY->setLabelsFont(QFont("Microsoft YaHei", 10, QFont::Bold));
 //   line_main[1]->setPen(QPen(Qt::blue,2,Qt::SolidLine));

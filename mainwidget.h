@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QDebug>
 #include "ledwidget.h"
 #include "chartviewwid.h"
@@ -24,6 +25,7 @@ public:
 
 signals:
     void send_TotleNum(int);
+    void send_BuhegeXiangmu(QString);
 
 public slots:
     void led_change(int,bool);
@@ -35,9 +37,12 @@ private:
     LedWidget *ledwidget[12];
     ChartViewWid *chartviewwid[4];
     ResultDialog *resultDialog;
-    QGridLayout *gridlayout;
+    QHBoxLayout *mainlayout;
+    QGridLayout *gridlayout_left;
+    QGridLayout *gridlayout_right;
     QLabel *a,*b,*c,*d;
     int m_totlenum;
+    QString m_buhege;
 };
 
 #endif // MAINWIDGET_H

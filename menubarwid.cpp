@@ -3,6 +3,11 @@
 MenuBarWid::MenuBarWid(QWidget *parent) : QWidget(parent)
 {
     lb_TotleNum = new QLabel(this);
+    ProgressBar = new QProgressBar(this);
+    ProgressBar->setMinimum(0);
+    ProgressBar->setMaximum(15);
+    ProgressBar->setFormat("%v");
+    ProgressBar->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);  // 对齐方式
     setupUi();
 
 }
@@ -18,6 +23,25 @@ void MenuBarWid::setupUi()
    m_ItotleNum = 0;
 
    m_bMode = true;
+
+
+   QString s1 = "QProgressBar {\
+       border: 2px solid grey;\
+       border-radius: 5px;\
+       text-align: center;\
+       color:#ffffff;\
+       font-size:40px;\
+   }";
+
+   QString s2 = "QProgressBar::chunk {\
+       background-color: rgb(67,207,124);\
+       width: 20px;\
+    }";
+
+
+   //       margin: 0.5px;\
+
+   ProgressBar->setStyleSheet(s1+s2);
 
    Init();
 }
@@ -80,12 +104,14 @@ void MenuBarWid::Init()
 
     lb_TotleNum->setStyleSheet("color:rgb(255,245,238);font:25px");
     lb_TotleNum->setText("共15个检验项目，当前通过项目:");
-    m_lbTotleNum = new QLabel(this);
-    m_lbTotleNum->setStyleSheet("color:rgb(255,245,238);font:25px");
-    m_lbTotleNum->setText("0");
+//    m_lbTotleNum = new QLabel(this);
+//    m_lbTotleNum->setStyleSheet("color:rgb(255,245,238);font:25px");
+//    m_lbTotleNum->setText("0");
     count_layout->addWidget(lb_TotleNum);
-    count_layout->addWidget(m_lbTotleNum);
+//    count_layout->addWidget(m_lbTotleNum);
     count_layout->setSpacing(5);
+    count_layout->addWidget(ProgressBar);
+    ProgressBar->setValue(0);
 
 
     m_pMin_button = new PushButton();
@@ -151,22 +177,25 @@ void MenuBarWid::setFirBtnChecked()
 void MenuBarWid::slotSetTotleNum()
 {
     m_ItotleNum++;
-    m_lbTotleNum->setText(QString::number(m_ItotleNum));
+//    m_lbTotleNum->setText(QString::number(m_ItotleNum));
 
 }
 
 void MenuBarWid::rec_TotleNum(int num)
 {
-    m_lbTotleNum->setText(QString::number(num));
+    lb_TotleNum->setText("共15个检验项目，当前通过项目:");
+//    m_lbTotleNum->setText(QString::number(num));
     if (num == 15)
     {
     lb_TotleNum->setText("当前产品检验通过");
-    m_lbTotleNum->setText("");
+//    m_lbTotleNum->setText("");
     }
 //    qDebug()<<num<<endl;
+    ProgressBar->setValue(num);
 }
 void MenuBarWid::ReInit()
 {
     lb_TotleNum->setText("共15个检验项目，当前通过项目:");
-    m_lbTotleNum->setText("0");
+//    m_lbTotleNum->setText("0");
+    ProgressBar->setValue(0);
 }

@@ -17,6 +17,7 @@ public:
     ReInit();
     LedChange(bool status);
     int m_result;
+    QString m_name;
 
 signals:
 

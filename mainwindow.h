@@ -46,7 +46,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     CANThread *canthread;
-    bool iFlag_zuoyi,iFlag_lihe,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
+    bool iFlag_zuoyi,iFlag_lihe,iFlag_zhuche_datuo,iFlag_kongdang,iFlag_shuangbian,iFlag_pto_shineng,iFlag_pto_waibu,iFlag_tsq_weizhi,
          iFlag_tsq_diwei,iFlag_zhuche_zhongxiaotuo,iFlag_siqu,iFlag_tsq_jiaodu;
     bool iSta_Dev,iSta_CanInit,iSta_CanStart,iSta_RecIng;
 //    NanDuWidget Widget;

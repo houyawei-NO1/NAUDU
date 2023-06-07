@@ -17,7 +17,7 @@ public:
     void ElectricChange(int numa);
     Init(QString str_name);
     ReInit();
-
+    QString m_name;
     int m_hege;
 
 
